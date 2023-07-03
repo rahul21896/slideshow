@@ -1,0 +1,17 @@
+{
+  "name": "rahuldhamecha/myslideshow",
+  "description": "The plugin for slideshow.",
+  "type": "wordpress-plugin",
+  "version": "1.0.0",
+  "require": {},
+  "autoload": {
+    "files": [
+      "inc/setup.php"
+    ],
+    "psr-4": {
+      "RahulDhamecha\\MySlideshow\\": "inc/"
+    },
+    "classmap": [ "inc/" ]
+  },
+  "scripts": {}
+}
