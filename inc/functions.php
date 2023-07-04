@@ -76,4 +76,3 @@ if ( ! function_exists( 'slideshow_get_template' ) ) {
 
 	}
 }
-

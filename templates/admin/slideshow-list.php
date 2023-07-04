@@ -5,4 +5,11 @@
  * @package my-slideshow
  */
 
-echo '<h3>' . esc_html__( 'Slideshows', 'my-slideshow' ) . '</h3>';
+?>
+<div class="container-fluid mt-4">
+	<div class="d-flex align-items-center">
+		<h1 class="mr-4"><?php echo esc_html__( 'Slideshows', 'my-slideshow' ); ?></h1>
+		<a class="btn btn-outline-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=add-new-slideshow' ) ); ?>"><?php echo esc_html__( 'Add New', 'my-slideshow' ); ?></a>
+	</div>
+	<hr />
+</div>

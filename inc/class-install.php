@@ -80,6 +80,7 @@ class Install {
 		if ( $slide_table_find <= 0 ) {
 			$slideshow_query = "CREATE TABLE IF NOT EXISTS $slide_table (
     							`ID` bigint(11) AUTO_INCREMENT,
+								`slideshow_id` int(10) default 0,
 								`slide_image` TEXT NOT NULL,
 								`slide_text` TEXT NULL,
     							`created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
