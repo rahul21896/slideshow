@@ -33,6 +33,13 @@ if ( ! defined( 'MY_SLIDESHOW_PLUGIN_URL' ) ) {
 }
 
 /**
+ * Define shortcode constant string for globally use.
+ */
+if ( ! defined( 'MY_SLIDESHOW_SHORTCODE' ) ) {
+	define( 'MY_SLIDESHOW_SHORTCODE', 'myslideshow' );
+}
+
+/**
  * Require autoload.php file to access class using namespace.
  */
 if(file_exists(MY_SLIDESHOW_PLUGIN_DIR . '/vendor/autoload.php')){ // phpcs:ignore

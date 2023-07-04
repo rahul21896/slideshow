@@ -83,6 +83,7 @@ class Install {
 								`slideshow_id` int(10) default 0,
 								`slide_image` TEXT NOT NULL,
 								`slide_text` TEXT NULL,
+								`slide_order` int(10) default 0,
     							`created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     							`updated_at` DATETIME DEFAULT '0000-00-00 00:00:00',
     							PRIMARY KEY (`ID`)

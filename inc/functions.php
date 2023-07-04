@@ -5,6 +5,8 @@
  * @package my-slideshow
  */
 
+use RahulDhamecha\MySlideshow\Install;
+
 /**
  * Locate Template.
  */
@@ -74,5 +76,57 @@ if ( ! function_exists( 'slideshow_get_template' ) ) {
 
 		include esc_url( $template_file );
 
+	}
+}
+
+/**
+ * Return slideshow detains by slideshow id.
+ */
+if ( ! function_exists( 'get_slideshows_details_by_id' ) ) {
+	/**
+	 * Return slideshow detains by slideshow id.
+	 *
+	 * @param int $slideshow_id slideshow_id.
+	 * @return array
+	 */
+	function get_slideshows_details_by_id( $slideshow_id = 0 ) {
+		$data = [
+			'slideshow' => '',
+			'slides'    => [],
+		];
+		if ( intval( $slideshow_id ) > 0 ) {
+			global $wpdb;
+			$slideshow_table = $wpdb->prefix . Install::$SLIDESHOW_TABLE;
+			$slide_table     = $wpdb->prefix . Install::$SLIDE_TABLE;
+			// @codingStandardsIgnoreStart
+			$slideshow_query = $wpdb->prepare( "SELECT * FROM $slideshow_table WHERE ID='%d' LIMIT %d", [ $slideshow_id, 1 ] );
+			$slideshow       = $wpdb->get_results( $slideshow_query );
+			$slide_query = $wpdb->prepare( "SELECT * FROM $slide_table WHERE slideshow_id='%d'", [ $slideshow_id ] );
+			$slides = $wpdb->get_results( $slide_query );
+			// @codingStandardsIgnoreEnd
+			if ( is_array( $slideshow ) && count( $slideshow ) > 0 ) {
+				$data['slideshow'] = reset( $slideshow );
+			}
+			if ( is_array( $slides ) && count( $slides ) > 0 ) {
+				$data['slides'] = $slides;
+			}
+		}
+		return $data;
+	}
+}
+
+/**
+ * Return slideshow shortcode by slideshow id.
+ */
+if ( ! function_exists( 'get_slideshow_shortcode_by_id' ) ) {
+	/**
+	 * Return slideshow shortcode by slideshow id.
+	 *
+	 * @param int $slideshow_id slideshow_id.
+	 * @return string
+	 */
+	function get_slideshow_shortcode_by_id( $slideshow_id = 0 ) {
+		$shortocde = '[' . MY_SLIDESHOW_SHORTCODE . ' ID="' . $slideshow_id . '"]';
+		return esc_html( $shortocde );
 	}
 }

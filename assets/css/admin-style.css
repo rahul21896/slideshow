@@ -1,3 +1,6 @@
 a[href="admin.php?page=add-new-slideshow"] {
   display: none !important;
 }
+#edit_shortcode{
+  cursor: pointer;
+}
