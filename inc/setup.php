@@ -14,5 +14,6 @@ namespace RahulDhamecha\MySlideshow;
  * @return void
  */
 function setup() {
-	// Setup Class For slideshow.
+	// Register admin settings page.
+	new SlideshowAdmin();
 }

@@ -25,7 +25,9 @@ class ComposerStaticInit077229b15377be21c36fa763b1d3ea41 {
 	];
 
 	public static $classMap = [
-		'RahulDhamecha\\MySlideshow\\Install' => __DIR__ . '/../..' . '/inc/class-install.php',
+		'Composer\\InstalledVersions'                => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+		'RahulDhamecha\\MySlideshow\\Install'        => __DIR__ . '/../..' . '/inc/class-install.php',
+		'RahulDhamecha\\MySlideshow\\SlideshowAdmin' => __DIR__ . '/../..' . '/inc/class-slideshow-admin.php',
 	];
 
 	public static function getInitializer( ClassLoader $loader ) {
