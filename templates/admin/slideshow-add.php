@@ -15,7 +15,7 @@ $shortcode          = get_slideshow_shortcode_by_id( $slideshow_id );
 ?>
 <div class="container-fluid mt-4">
 	<div class="d-flex align-items-center">
-		<h3 class="mr-4">
+		<h3 class="mr-4 m-0 p-0">
 			<?php
 			if ( ! empty( $slideshow_title ) ) {
 				echo esc_html__( 'Edit Slideshow', 'my-slideshow' );

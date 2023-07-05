@@ -130,3 +130,24 @@ if ( ! function_exists( 'get_slideshow_shortcode_by_id' ) ) {
 		return esc_html( $shortocde );
 	}
 }
+
+/**
+ * Return all slideshows list.
+ */
+if ( ! function_exists( 'get_slideshows_list' ) ) {
+	/**
+	 * Return all slideshows list.
+	 *
+	 * @return array
+	 */
+	function get_slideshows_list() {
+		$slideshows = [];
+		global $wpdb;
+		$slideshow_table = $wpdb->prefix . Install::$SLIDESHOW_TABLE;
+		// @codingStandardsIgnoreStart
+		$slideshow_query = $wpdb->prepare( "SELECT * FROM $slideshow_table");
+		$slideshows       = $wpdb->get_results( $slideshow_query );
+		// @codingStandardsIgnoreEnd
+		return $slideshows;
+	}
+}

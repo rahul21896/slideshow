@@ -43,3 +43,7 @@ div#slideshow_slides ul li button {
   padding: 5px 10px;
   font-weight: 800;
 }
+
+.bg-warning-light{
+  background: #ffc10750 !important;
+}

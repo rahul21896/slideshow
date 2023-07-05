@@ -48,7 +48,8 @@ class SlideshowAdmin {
 	 */
 	public function render_myslideshow_admin_page() {
 		// Fetch template and render slideshow listing.
-		slideshow_get_template( 'admin/slideshow-list.php' );
+		$slideshows = get_slideshows_list();
+		slideshow_get_template( 'admin/slideshow-list.php', [ 'slideshows' => $slideshows ] );
 	}
 
 	/**
@@ -98,6 +99,13 @@ class SlideshowAdmin {
 	 * @return void
 	 */
 	public function slideshow_submit_form_action() {
+		// Redirect on same page if delete action performed.
+		$delete = $this->delete_slideshow();
+		if ( $delete ) {
+			$admin_url = admin_url( 'admin.php?page=my-slideshow' );
+			wp_safe_redirect( $admin_url );
+			exit;
+		}
 		// Redirect on Edit page with the slideshow id.
 		$slideshow_id = $this->generate_slideshow_shortcode();
 		if ( intval( $slideshow_id ) > 0 ) {
@@ -105,6 +113,28 @@ class SlideshowAdmin {
 			wp_safe_redirect( $admin_url );
 			exit;
 		}
+	}
+
+	/**
+	 * Delete slideshow.
+	 *
+	 * @return bool
+	 */
+	private function delete_slideshow() {
+		$status       = false;
+		$slideshow_id = filter_input( INPUT_GET, 'slideshow_id', FILTER_SANITIZE_NUMBER_INT );
+		$action       = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
+		if ( intval( $slideshow_id ) > 0 && $action === 'delete' ) {
+			global $wpdb;
+			$slideshow_table = $wpdb->prefix . Install::$SLIDESHOW_TABLE;
+			$slide_table     = $wpdb->prefix . Install::$SLIDE_TABLE;
+			// @codingStandardsIgnoreStart
+			$delete_slideshow = $wpdb->delete( $slideshow_table, [ 'ID' => $slideshow_id ] );
+			$delete_slides    = $wpdb->delete( $slide_table, [ 'slideshow_id' => $slideshow_id ] );
+			// @codingStandardsIgnoreEnd
+			$status = $delete_slideshow && $delete_slides;
+		}
+		return boolval( $status );
 	}
 
 	/**
@@ -167,13 +197,7 @@ class SlideshowAdmin {
 	public function slideshow_upload_slide_image() {
 		$nounce = filter_input( INPUT_POST, '_wpnonce', FILTER_SANITIZE_STRING );
 		if ( wp_verify_nonce( $nounce, 'slideshow_generate' ) ) {
-			echo wp_json_encode(
-				[
-					'status'  => 'error',
-					'message' => 'Session Expired.',
-				] 
-			);
-			die;
+			die( 'Session Expired.' );
 		}
 		$slideshow_id = filter_input( INPUT_POST, 'slideshow_id', FILTER_SANITIZE_NUMBER_INT );
 		$slide_image = $_FILES['slide_image'] ?? []; // phpcs:ignore
