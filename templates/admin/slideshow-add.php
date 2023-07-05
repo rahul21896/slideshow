@@ -27,6 +27,7 @@ $shortcode          = get_slideshow_shortcode_by_id( $slideshow_id );
 				<code id="edit_shortcode" onclick="copyText('<?php echo esc_html( $shortcode ); ?>')"><?php echo esc_html( $shortcode ); ?></code>
 			<?php endif; ?>
 		</h3>
+		<a class="btn btn-outline-secondary" href="<?php echo esc_url( admin_url( 'admin.php?page=my-slideshow' ) ); ?>"><?php echo esc_html__( 'Back', 'my-slideshow' ); ?></a>
 
 	</div>
 	<hr />
@@ -49,11 +50,24 @@ $shortcode          = get_slideshow_shortcode_by_id( $slideshow_id );
 				</div>
 			</div>
 		</div>
+		<div id="slideshow_slide_section">
+
+		</div>
+		<?php if ( intval( $slideshow_id ) > 0 ) : ?>
 		<div class="form-row">
 			<div class="col-md-12">
 				<div id="slide_upload_form" class="dropzone"></div>
 			</div>
 		</div>
-		<button type="submit" name="generate_slideshow_submit" class="btn btn-primary"><?php echo esc_html__( 'Generate Shortcode', 'my-slideshow' ); ?></button>
+		<?php endif; ?>
+		<button type="submit" name="generate_slideshow_submit" class="btn btn-primary">
+			<?php
+			if ( intval( $slideshow_id ) > 0 ) {
+				echo esc_html__( 'Update', 'my-slideshow' );
+			} else {
+				echo esc_html__( 'Save', 'my-slideshow' );
+			}
+			?>
+		</button>
 	</form>
 </div>

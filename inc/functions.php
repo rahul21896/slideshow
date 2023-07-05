@@ -101,7 +101,7 @@ if ( ! function_exists( 'get_slideshows_details_by_id' ) ) {
 			// @codingStandardsIgnoreStart
 			$slideshow_query = $wpdb->prepare( "SELECT * FROM $slideshow_table WHERE ID='%d' LIMIT %d", [ $slideshow_id, 1 ] );
 			$slideshow       = $wpdb->get_results( $slideshow_query );
-			$slide_query = $wpdb->prepare( "SELECT * FROM $slide_table WHERE slideshow_id='%d'", [ $slideshow_id ] );
+			$slide_query = $wpdb->prepare( "SELECT * FROM $slide_table WHERE slideshow_id='%d' order by slide_order asc", [ $slideshow_id ] );
 			$slides = $wpdb->get_results( $slide_query );
 			// @codingStandardsIgnoreEnd
 			if ( is_array( $slideshow ) && count( $slideshow ) > 0 ) {

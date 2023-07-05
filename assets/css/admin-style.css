@@ -4,3 +4,42 @@ a[href="admin.php?page=add-new-slideshow"] {
 #edit_shortcode{
   cursor: pointer;
 }
+
+div#slideshow_slides ul {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  gap:15px;
+}
+
+div#slideshow_slides ul li img {
+  width: 150px;
+  height: 150px;
+}
+
+div#slideshow_slides ul.disable {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+#slideshow_slide_section.disable {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+div#slideshow_slides ul li {
+  position: relative;
+}
+
+div#slideshow_slides ul li button {
+  position: absolute;
+  color: #fff;
+  font-size: 16px;
+  top: 5px;
+  right: 5px;
+  padding: 5px 10px;
+  font-weight: 800;
+}

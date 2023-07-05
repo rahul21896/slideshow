@@ -27,6 +27,9 @@ class SlideshowAdmin {
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ] );
 		add_action( 'wp_loaded', [ $this, 'slideshow_submit_form_action' ] );
 		add_action( 'wp_ajax_upload_slideshow_image', [ $this, 'slideshow_upload_slide_image' ] );
+		add_action( 'wp_ajax_slide_order_update', [ $this, 'slideshow_slide_order_update' ] );
+		add_action( 'wp_ajax_update_slides_list', [ $this, 'slideshow_slide_list_update' ] );
+		add_action( 'wp_ajax_delete_slide', [ $this, 'slideshow_slide_delete' ] );
 	}
 
 	/**
@@ -204,12 +207,14 @@ class SlideshowAdmin {
 	 */
 	private function slideshow_create_slide_record( $upload_data, $slideshow_id ) {
 		global $wpdb;
-		$slide_table = $wpdb->prefix . Install::$SLIDE_TABLE;
-		$upload_url  = $upload_data['url'] ?? '';
-		$data        = [
+		$slide_table    = $wpdb->prefix . Install::$SLIDE_TABLE;
+		$upload_url     = $upload_data['url'] ?? '';
+		$slideshow_data = get_slideshows_details_by_id( $slideshow_id );
+		$slides         = $slideshow_data['slides'] ?? [];
+		$data           = [
 			'slideshow_id' => $slideshow_id,
 			'slide_image'  => $upload_url,
-			'slide_text'   => '',
+			'slide_order'  => count( $slides ) + 1,
 		];
 		// @codingStandardsIgnoreStart
 		$status       = $wpdb->insert( $slide_table, $data );
@@ -225,5 +230,84 @@ class SlideshowAdmin {
 			];
 		}
 		return $success_data;
+	}
+
+	/**
+	 * Slideshow slide order update.
+	 *
+	 * @return void
+	 */
+	public function slideshow_slide_order_update() {
+		$slide_data = filter_input( INPUT_POST, 'slide_data', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY ); // phpcs:ignore
+		if ( is_array( $slide_data ) && count( $slide_data ) > 0 ) {
+			foreach ( $slide_data as $slide ) {
+				$this->update_slide_order( $slide );
+			}
+		}
+		echo wp_json_encode(
+			[
+				'status'  => 'success',
+				'message' => 'Slide Order Updated Successfully.',
+			]
+		);
+		die;
+	}
+
+	/**
+	 * Slideshow update slide order.
+	 *
+	 * @param array $slide slide data.
+	 * @return void
+	 */
+	private function update_slide_order( $slide ) {
+		global $wpdb;
+		if ( isset( $slide['id'] ) && $slide['id'] > 0 ) {
+			$slide_table = $wpdb->prefix . Install::$SLIDE_TABLE;
+			// @codingStandardsIgnoreStart
+			$wpdb->update($slide_table,['slide_order' => $slide['order']],['ID' => $slide['id']]);
+			// @codingStandardsIgnoreEnd
+		}
+	}
+
+	/**
+	 * Render slides by slideshow id.
+	 *
+	 * @return void
+	 */
+	public function slideshow_slide_list_update() {
+		$slideshow_id     = filter_input( INPUT_POST, 'slideshow_id', FILTER_SANITIZE_NUMBER_INT );
+		$slideshow_detail = get_slideshows_details_by_id( $slideshow_id );
+		slideshow_get_template( 'admin/slide-list.php', [ 'slideshow_details' => $slideshow_detail ] );
+		die;
+	}
+
+	/**
+	 * Delete slideshow using ajax  request.
+	 *
+	 * @return void
+	 */
+	public function slideshow_slide_delete() {
+		$slide_id = filter_input( INPUT_POST, 'slide_id', FILTER_SANITIZE_NUMBER_INT );
+		if ( intval( $slide_id ) > 0 ) {
+			global $wpdb;
+			// @codingStandardsIgnoreStart
+			$slide_table = $wpdb->prefix.Install::$SLIDE_TABLE;
+			$wpdb->delete($slide_table,['ID' => $slide_id]);
+			// @codingStandardsIgnoreEnd
+			echo wp_json_encode(
+				[
+					'status'  => 'success',
+					'message' => 'Slide Order Updated Successfully.',
+				]
+			);
+			die;
+		}
+		echo wp_json_encode(
+			[
+				'status'  => 'error',
+				'message' => 'Invalid Slide id.',
+			]
+		);
+		die;
 	}
 }
