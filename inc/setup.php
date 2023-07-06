@@ -16,4 +16,5 @@ namespace RahulDhamecha\MySlideshow;
 function setup() {
 	// Register admin settings page.
 	new SlideshowAdmin();
+	new SlideshowFront();
 }

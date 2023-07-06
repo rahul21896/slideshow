@@ -8,7 +8,7 @@
 namespace RahulDhamecha\MySlideshow;
 
 /**
- * Slideshow database table creation and deletion.
+ * Slideshow admin site settings manager..
  */
 class SlideshowAdmin {
 
@@ -73,13 +73,13 @@ class SlideshowAdmin {
 			return false;
 		}
 		global $wpdb;
-		$table           = $wpdb->prefix . Install::$SLIDESHOW_TABLE;
-		$slideshow_id    = filter_input( INPUT_POST, 'slideshow_id', FILTER_SANITIZE_NUMBER_INT );
-		$slideshow_title = filter_input( INPUT_POST, 'slideshow_title', FILTER_SANITIZE_STRING );
-		$show_title      = filter_input( INPUT_POST, 'show_hide_title', FILTER_SANITIZE_STRING );
-		$data            = [
+		$table              = $wpdb->prefix . Install::$SLIDESHOW_TABLE;
+		$slideshow_id       = filter_input( INPUT_POST, 'slideshow_id', FILTER_SANITIZE_NUMBER_INT );
+		$slideshow_title    = filter_input( INPUT_POST, 'slideshow_title', FILTER_SANITIZE_STRING );
+		$slideshow_settings = $this->request_slideshow_settings();
+		$data               = [
 			'slideshow_title'    => $slideshow_title,
-			'slideshow_settings' => wp_json_encode( [ 'show_title' => $show_title ] ),
+			'slideshow_settings' => wp_json_encode( $slideshow_settings ),
 		];
 
 		// @codingStandardsIgnoreStart
@@ -91,6 +91,37 @@ class SlideshowAdmin {
 		}
 		// @codingStandardsIgnoreEnd
 		return esc_attr( $slideshow_id );
+	}
+
+	/**
+	 * Return slideshow settings array from the request settings.
+	 *
+	 * @return array
+	 */
+	private function request_slideshow_settings() {
+		$show_title     = filter_input( INPUT_POST, 'show_hide_title', FILTER_SANITIZE_STRING );
+		$show_desktop   = filter_input( INPUT_POST, 'slide_to_show_desktop', FILTER_SANITIZE_STRING );
+		$show_tab       = filter_input( INPUT_POST, 'slide_to_show_tab', FILTER_SANITIZE_STRING );
+		$show_mobile    = filter_input( INPUT_POST, 'slide_to_show_mobile', FILTER_SANITIZE_STRING );
+		$scroll_desktop = filter_input( INPUT_POST, 'slide_to_scroll_desktop', FILTER_SANITIZE_STRING );
+		$scroll_tab     = filter_input( INPUT_POST, 'slide_to_scroll_tab', FILTER_SANITIZE_STRING );
+		$scroll_mobile  = filter_input( INPUT_POST, 'slide_to_scroll_mobile', FILTER_SANITIZE_STRING );
+		$arrows         = filter_input( INPUT_POST, 'slideshow_arrows', FILTER_SANITIZE_STRING );
+		$dots           = filter_input( INPUT_POST, 'slideshow_dots', FILTER_SANITIZE_STRING );
+		$infinite       = filter_input( INPUT_POST, 'slideshow_scroll', FILTER_SANITIZE_STRING );
+		$data           = [
+			'show_title'     => $show_title,
+			'show_desktop'   => $show_desktop,
+			'show_tab'       => $show_tab,
+			'show_mobile'    => $show_mobile,
+			'scroll_desktop' => $scroll_desktop,
+			'scroll_tab'     => $scroll_tab,
+			'scroll_mobile'  => $scroll_mobile,
+			'arrows'         => $arrows,
+			'dots'           => $dots,
+			'infinite'       => $infinite,
+		];
+		return $data;
 	}
 
 	/**
