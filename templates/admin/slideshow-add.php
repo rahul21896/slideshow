@@ -43,8 +43,8 @@ $shortcode          = get_slideshow_shortcode_by_id( $slideshow_id );
 		<input type="hidden" name="slideshow_id" id="slideshow_id" value="<?php echo esc_attr( $slideshow_id ); ?>" />
 		<div class="form-row">
 			<div class="form-group col-md-4">
-				<label for="slideshow_title"><?php echo esc_html__( 'Slideshow Title', 'my-slideshow' ); ?></label>
-				<input type="text" name="slideshow_title" class="form-control" value="<?php echo esc_attr( $slideshow_title ); ?>" id="slideshow_title" placeholder="Slideshow Title">
+				<label for="slideshow_title"><?php echo esc_html__( 'Slideshow Title', 'my-slideshow' ); ?><span class="text-danger"><?php echo esc_html__( ' *', 'my-slideshow' ); ?></span></label>
+				<input type="text" name="slideshow_title" class="form-control" value="<?php echo esc_attr( $slideshow_title ); ?>" id="slideshow_title" placeholder="<?php echo esc_attr__( 'Slideshow Title', 'my-slideshow' ); ?>" required>
 			</div>
 			<div class="form-group col-md-2">
 				<label for="slideshow_title"><?php echo esc_html__( 'Show / Hide Title', 'my-slideshow' ); ?></label>
@@ -150,7 +150,7 @@ $shortcode          = get_slideshow_shortcode_by_id( $slideshow_id );
 			</div>
 		</div>
 		<?php endif; ?>
-		<button type="submit" name="generate_slideshow_submit" class="btn btn-primary">
+		<button type="submit" name="generate_slideshow_submit" class="btn btn-primary mt-4">
 			<?php
 			if ( intval( $slideshow_id ) > 0 ) {
 				echo esc_html__( 'Update', 'my-slideshow' );
