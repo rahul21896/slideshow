@@ -60,6 +60,6 @@ Password : Demo@123
 
 ## Video Guide
 ***
-<video src="http://slideshow.rahuldhamecha.in/slideshow_images/slideshow-video.webm" type="video/webm">
-    <p>Your browser cannot play the provided video file.</p>
-</video>
+
+https://github.com/rahul21896/slideshow/assets/65551661/e8940043-bf2d-419c-98d7-8411df20c98f
+
